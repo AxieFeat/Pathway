@@ -1,18 +1,14 @@
 plugins {
-    kotlin("jvm") version "2.1.20"
+    id("pathway.base")
 }
 
-subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
+allprojects {
+    apply(plugin = "pathway.base")
 
-    group = "xyz.axie.pathway"
-    version = "1.0"
-
-    repositories {
-        mavenCentral()
-    }
-
-    kotlin {
-        jvmToolchain(21)
+    group = rootProject.findProperty("group") ?: throw IllegalStateException("Project group not specified")
+    version = rootProject.findProperty("version") ?: throw IllegalStateException("Project version not specified")
+    description = rootProject.findProperty("description") as? String ?: run {
+        logger.warn("Project description not found, fallback to empty string.")
+        return@run ""
     }
 }
